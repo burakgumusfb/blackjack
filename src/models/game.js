@@ -5,12 +5,9 @@ const schema = new mongoose.Schema({
       type: Date,
       required: true
     },
-    end_time: {
-      type: Date,
-      required: true
-    }
+    end_time: { type: Date,}
 });
 
-const Game = mongoose.model('Game', schema);
+const Game = mongoose.model('games', schema);
 
 module.exports = Game;

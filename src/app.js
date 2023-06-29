@@ -4,11 +4,18 @@ const http = require('http');
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const app = express();
+const betRouter = require('./api/controllers/bet.route');
+
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use('/bet',betRouter);
+
+
+
+
 
 
 process.on('unhandledRejection', (error) => {
