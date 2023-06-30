@@ -17,22 +17,6 @@ function shuffleCards(cards) {
 }
 
 /**
- * this method should have refactoring. 
- **/
-function maskDealersSecondCard(dealerCards) {
-    dealerCards.forEach((item, index) => {
-        // if (index == 1) {
-        //     item.value = '***';
-        //     item.name = '***';
-        //     item.deck = '***';
-        //     item.type = '***';
-        // }
-    });
-    return dealerCards;
-}
-
-
-/**
 this method creates a new game between player and the dealer.
 **/
 exports.newGame = async (playerName, delay) => {
@@ -55,8 +39,6 @@ exports.newGame = async (playerName, delay) => {
     const usedCards = playerCards.concat(dealerCards);
     await usedGameCards(savedGame._id, usedCards);
 
-    dealerCards = maskDealersSecondCard(dealerCards);
-
     const response = {
         gameId: savedGame._id,
         dealerCards: dealerCards,
@@ -64,6 +46,10 @@ exports.newGame = async (playerName, delay) => {
     }
     return response;
 };
+
+/**
+ this method takes a card from desk.
+ **/
 
 exports.drawCard = async (playerName, action) => {
 
@@ -91,14 +77,14 @@ exports.drawCard = async (playerName, action) => {
 
     if (game.status == status.PLAYING) {
         const dealer = await getDealer();
-        let dealerScore = await calculateHandValue(game._id, dealer._id);
+        let dealerScore = await calculateHandValue(game._id, dealer._id, true);
         while (dealerScore < scores.THRESHOLD) {
 
             const deckCard = await drawCardFromDeck(game._id)
             await createHand(game._id, dealer._id, deckCard.cards);
             await usedGameCards(game._id, deckCard.cards);
 
-            dealerScore = await calculateHandValue(game._id, dealer._id);
+            dealerScore = await calculateHandValue(game._id, dealer._id, true);
         }
 
         if (dealerScore > scores.BLACKJACK_SCORE) {
@@ -111,10 +97,10 @@ exports.drawCard = async (playerName, action) => {
             game.status = status.DRAW;
         }
     }
-    await updateGameStatus(game._id,game.status);
+    await updateGameStatus(game._id, game.status);
     const response = {
-        gameId:game._id,
-        status:game.status
+        gameId: game._id,
+        status: game.status
     }
     return response;
 }

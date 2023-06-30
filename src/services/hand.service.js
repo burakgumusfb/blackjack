@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Card, Cardschema } = require('../models/card');
 const Hand = require('../models/hand');
+const { scores } = require('../constants/constants');
 
 exports.createHand = async (gameId, playerId, cards) => {
 
@@ -18,7 +19,7 @@ exports.createHand = async (gameId, playerId, cards) => {
     await Hand.insertMany(hands);
 };
 
-exports.calculateHandValue = async (gameId, playerId) => {
+exports.calculateHandValue = async (gameId, playerId, isDealer = false) => {
     let usedCards = await Hand.find({ "game": gameId, "player": playerId }).select('card -_id').lean();
     if (!usedCards)
         throw new Error("Used cards couldn't find.");
@@ -32,24 +33,29 @@ exports.calculateHandValue = async (gameId, playerId) => {
     }, 0);
 
 
-    // As (Ace) sayısını ve toplam değeri tutacak değişkenler
     let aceCount = 0;
     let adjustedValue = totalValue;
 
-    // As (Ace) sayısını ve toplam değeri kontrol et
-    cards.forEach((card) => {
-        if (card.isAce) {
-            aceCount++;
-        }
-    });
+    aceCount = cards.filter(x => x.isAce == true).length;
 
-    // Eğer 2 veya daha fazla As (Ace) varsa ve toplam değer 21'i geçiyorsa, As (Ace) değerlerini 1 olarak ayarla
-    while (aceCount > 1 && adjustedValue > 21) {
-        adjustedValue -= 10;
+
+    while (aceCount > 1 && adjustedValue > scores.BLACKJACK_SCORE) {
+        adjustedValue -= 12;
         aceCount--;
     }
 
-    while (aceCount >= 1 && adjustedValue > 21) {
+    if (aceCount >= 1 && adjustedValue > scores.BLACKJACK_SCORE) {
+        adjustedValue -= 1;
+        aceCount--;
+    }
+
+    if(isDealer && aceCount == 1 && adjustedValue < scores.THRESHOLD)
+    {
+      
+        var decision = Math.round(Math.random());
+        if(decision == 0)
+         adjustedValue -= 10;
+        else
         adjustedValue -= 1;
     }
 
