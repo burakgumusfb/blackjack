@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
     {
-        value: { type: Number, required: true },
+        value: { type: [Number], required: true },
         name: {
             type: String, required: true
         },
@@ -18,4 +18,7 @@ const Card = mongoose.model('cards', schema, 'cards');
 
 
 
-module.exports = Card;
+module.exports = {
+    Card:Card,
+    Cardschema:schema    
+};

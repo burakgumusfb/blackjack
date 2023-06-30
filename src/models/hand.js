@@ -16,6 +16,10 @@ const schema = new mongoose.Schema({
         ref: 'cards',
         required: true
     },
+    date_time: {
+        type: Date,
+        required: true
+    },
     result: {type: String}
 });
 

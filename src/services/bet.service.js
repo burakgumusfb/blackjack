@@ -1,81 +1,54 @@
-const Card = require('../models/card');
+const { Card } = require('../models/card');
 const Game = require('../models/game');
 const Hand = require('../models/hand');
 const Player = require('../models/player');
 
+const {createPlayer,createDealer} = require('./player.service');
+const {createNewGame} = require('./game.service');
+
 function shuffleCards(array) {
     return array.sort(() => Math.random() - 0.5);
 }
+async function createHand(gameId, playerId, cards) {
 
-const betService = {
-
-    newGame: async (playerName, delay) => {
-
-        let dealer = await Player.findOne({ "name": "dealer" }).exec();
-
-        if (!dealer) 
-        {
-             dealer = new Player({
-                name: "dealer"
-            });
-            await dealer.save();
-        }
-
-        let player = await Player.findOne({ "name": playerName }).exec();
-
-        if (!player) 
-        {
-             player = new Player({
-                name: playerName
-            });
-            await player.save();
-        }
-
-
-
-        const newGame = new Game({
-            start_time: new Date(),
-            end_time: null
+    let hands = [];
+    cards.forEach(card => {
+        let newHand = new Hand({
+            game: gameId,
+            player: playerId,
+            card: card._id,
+            date_time:new Date()
         });
+        hands.push(newHand);
+    });
 
-        const savedGame = await newGame.save();
+    await Hand.insertMany(hands);
+}
 
-        const cards = await Card.find().lean().exec();;
-        const shuffledCards = shuffleCards(cards);
-        const playerCards = shuffledCards.splice(0, 2);
-        const dealerCards = shuffledCards.splice(0, 2);
+exports.newGame = async (playerName, delay) => {
 
-        for (const card of playerCards) {
-            const newHand = new Hand({
-                game: savedGame._id,
-                player: player._id,
-                card: card._id
-            });
-            await newHand.save();
-        }
+    await Game.deleteMany({}).exec();
+    await Hand.deleteMany({}).exec();
+
+    const dealer = await createDealer();
+    const player = await createPlayer(playerName);
+
+    const cards = await Card.find().lean().exec();
+    const shuffledCards = shuffleCards(cards);
+    const savedGame = await createNewGame(shuffledCards);
+
+    const playerCards = shuffledCards.splice(0, 2);
+    const dealerCards = shuffledCards.splice(0, 2);
+
+    await createHand(savedGame._id, player._id, playerCards);
+    await createHand(savedGame._id, dealer._id, dealerCards);
 
 
-        for (const card of dealerCards) {
-            const newHand = new Hand({
-                game: savedGame._id,
-                player: dealer._id,
-                card: card._id
-            });
-            await newHand.save();
-        }
-        const response = {
-            gameId:savedGame._id,
-            dealerCards:dealerCards,
-            playerCards:playerCards
-        }
-        return response;
-    },
-    drawCard: async () => {
-        return;
-    },
-    finishHand: async () => {
-        return;
+    const response = {
+        gameId: savedGame._id,
+        dealerCards: dealerCards,
+        playerCards: playerCards
     }
+    return response;
 };
 
-module.exports = betService;
