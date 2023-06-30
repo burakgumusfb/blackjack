@@ -10,6 +10,18 @@ const { createHand } = require('./hand.service');
 function shuffleCards(cards) {
     return cards.sort(() => Math.random() - 0.5);
 }
+
+function maskDealersSecondCard(dealerCards) {
+    dealerCards.forEach((item, index) => {
+        if (index == 1) {
+            item.value = '***';
+            item.name = '***';
+            item.deck = '***';
+            item.type = '***';
+        }
+    });
+    return dealerCards;
+}
 exports.newGame = async (playerName, delay) => {
 
     await Game.deleteMany({}).exec();
@@ -22,14 +34,16 @@ exports.newGame = async (playerName, delay) => {
     const shuffledCards = shuffleCards(cards);
     const savedGame = await createNewGame(shuffledCards);
 
-    const playerCards = shuffledCards.splice(0, 2);
-    const dealerCards = shuffledCards.splice(0, 2);
+    let playerCards = shuffledCards.splice(0, 2);
+    let dealerCards = shuffledCards.splice(0, 2);
 
     await createHand(savedGame._id, player._id, playerCards);
     await createHand(savedGame._id, dealer._id, dealerCards);
 
     const usedCards = playerCards.concat(dealerCards);
     await UsedGameCards(savedGame._id, usedCards);
+
+    dealerCards = maskDealersSecondCard(dealerCards);
 
     const response = {
         gameId: savedGame._id,
