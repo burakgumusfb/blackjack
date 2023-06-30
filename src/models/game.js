@@ -6,7 +6,12 @@ const schema = new mongoose.Schema({
       type: Date,
       required: true
     },
-    end_time: { type: Date},
+    player: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'players',
+      required: true
+    },
+    status:{type:String},
     cards: [Cardschema]
 });
 

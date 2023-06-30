@@ -12,7 +12,7 @@ const schema = new mongoose.Schema(
         isUsed:{type:Boolean,default:false}
     },
 );
-schema.index({ name: 1, decks: 1,type:1 }, { unique: true })
+// schema.index({ name: 1, decks: 1,type:1 }, { unique: true })
 
 const Card = mongoose.model('cards', schema, 'cards');
 

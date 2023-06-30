@@ -9,4 +9,8 @@ router
     .route('/new-game')
     .post(validate(blackJackParams.paramsCreateNewGame),blackJackController.newGame);
 
+router
+    .route('/draw-card')
+    .post(validate(blackJackParams.paramsDrawCard),blackJackController.drawCard);
+
 module.exports = router;

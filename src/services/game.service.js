@@ -1,17 +1,20 @@
 const Game = require('../models/game');
+const Player = require('../models/player');
+const Hand = require('../models/hand');
+const { status } = require('../constants/constants');
 
-exports.createNewGame = async (cards) => {
-
+exports.createNewGame = async (playerId, cards) => {
     const newGame = new Game({
         start_time: new Date(),
+        player: playerId,
+        status: status.PLAYING,
         cards: cards
     });
     const savedGame = await newGame.save();
     return savedGame;
 };
 
-exports.UsedGameCards = async (gameId, cards) => {
-
+exports.usedGameCards = async (gameId, cards) => {
     cards.forEach(async card => {
         await Game.updateOne(
             { _id: gameId, 'cards._id': card._id },
@@ -19,3 +22,28 @@ exports.UsedGameCards = async (gameId, cards) => {
         ).exec();
     });
 };
+
+exports.DeleteBeforeGames = async (playerName) => {
+    const player = await Player.findOne({ "name": playerName }).lean();
+    if (player) {
+        const game = await Game.findOneAndDelete({ "player": player._id }).exec();
+        if (game) {
+            await Hand.deleteMany({ "game": game._id }).exec();
+        }
+    }
+}
+
+exports.updateGameStatus = async (gameId, status) => {
+        await Game.updateOne(
+            { _id: gameId},
+            { $set: { 'status': status } },
+        ).exec();
+};
+
+exports.getActiveGame = async (playerName) => {
+    const player = await Player.findOne({ "name": playerName }).lean();
+    if (player) {
+        const game = await Game.findOne({ "player": player._id }).lean();
+        return game;
+    }
+}
