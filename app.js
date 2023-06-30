@@ -5,7 +5,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const betRouter = require('./api/controllers/black-jack.route');
+const betRouter = require('./src/api/controllers/black-jack.route');
 
 
 app.use(cors());
@@ -29,6 +29,8 @@ mongoose.connect(mongodbUri, {});
 mongoose.set('returnOriginal', false);
 
 mongoose.connection.on('error', (err) => {
+    console.log(err);
+    console.log('db connection problem.')
     process.exit();
 });
 
