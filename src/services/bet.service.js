@@ -3,28 +3,13 @@ const Game = require('../models/game');
 const Hand = require('../models/hand');
 const Player = require('../models/player');
 
-const {createPlayer,createDealer} = require('./player.service');
-const {createNewGame} = require('./game.service');
+const { createPlayer, createDealer } = require('./player.service');
+const { createNewGame, UsedCards, UsedGameCards } = require('./game.service');
+const { createHand } = require('./hand.service');
 
-function shuffleCards(array) {
-    return array.sort(() => Math.random() - 0.5);
+function shuffleCards(cards) {
+    return cards.sort(() => Math.random() - 0.5);
 }
-async function createHand(gameId, playerId, cards) {
-
-    let hands = [];
-    cards.forEach(card => {
-        let newHand = new Hand({
-            game: gameId,
-            player: playerId,
-            card: card._id,
-            date_time:new Date()
-        });
-        hands.push(newHand);
-    });
-
-    await Hand.insertMany(hands);
-}
-
 exports.newGame = async (playerName, delay) => {
 
     await Game.deleteMany({}).exec();
@@ -43,6 +28,8 @@ exports.newGame = async (playerName, delay) => {
     await createHand(savedGame._id, player._id, playerCards);
     await createHand(savedGame._id, dealer._id, dealerCards);
 
+    const usedCards = playerCards.concat(dealerCards);
+    await UsedGameCards(savedGame._id, usedCards);
 
     const response = {
         gameId: savedGame._id,

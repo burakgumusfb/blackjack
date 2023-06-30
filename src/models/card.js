@@ -8,7 +8,8 @@ const schema = new mongoose.Schema(
         },
         deck:{type:Number,required:true},
         type:{type:String,required:true},
-        isAce:{type:Boolean}
+        isAce:{type:Boolean},
+        isUsed:{type:Boolean,default:false}
     },
 );
 schema.index({ name: 1, decks: 1,type:1 }, { unique: true })
