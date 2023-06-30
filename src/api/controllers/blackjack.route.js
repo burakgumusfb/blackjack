@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
-const blackJackController = require('./black-jack.controller');
-const blackJackParams = require('./black-jack.params');
+const blackJackController = require('./blackjack.controller');
+const blackJackParams = require('./blackjack.params');
 const validate = require('../../utils/validation');
 
 

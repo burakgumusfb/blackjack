@@ -5,7 +5,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const betRouter = require('./src/api/controllers/black-jack.route');
+const betRouter = require('./api/controllers/blackjack.route');
 
 
 app.use(cors());

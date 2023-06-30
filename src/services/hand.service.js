@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const { Card, Cardschema } = require('../models/card');
+const { Card } = require('../models/card');
 const Hand = require('../models/hand');
 const { scores } = require('../constants/constants');
 

@@ -1,10 +1,6 @@
 const { Card } = require('../models/card');
-const Game = require('../models/game');
-const Hand = require('../models/hand');
-const Player = require('../models/player');
-
 const { createPlayer, createDealer, getPlayer, getDealer } = require('./player.service');
-const { createNewGame, UsedGameCards, DeleteBeforeGames, getGame, getActiveGame, usedGameCards, updateGameStatus } = require('./game.service');
+const { createNewGame, DeleteBeforeGames, getActiveGame, usedGameCards, updateGameStatus } = require('./game.service');
 const { createHand, calculateHandValue } = require('./hand.service');
 const { actions, scores, status } = require('../constants/constants');
 const { drawCardFromDeck } = require('./card.service');
@@ -19,7 +15,7 @@ function shuffleCards(cards) {
 /**
 this method creates a new game between player and the dealer.
 **/
-exports.newGame = async (playerName, delay) => {
+exports.newGame = async (playerName) => {
 
     await DeleteBeforeGames(playerName);
 
