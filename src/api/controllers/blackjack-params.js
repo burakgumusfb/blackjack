@@ -10,7 +10,7 @@ const schemas = {
     paramsDrawCard: {
         body: Joi.object().keys({
             playerName: Joi.string().required().empty(),
-            action: Joi.number().required().empty()
+            action: Joi.string().required().empty()
         }),
     },
 };

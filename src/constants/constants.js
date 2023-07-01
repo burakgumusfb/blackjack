@@ -1,6 +1,6 @@
 const actions = {
-  HIT: 1,
-  STAND: 2
+  HIT: 'HIT',
+  STAND: 'STAND'
 };
 
 const scores = {

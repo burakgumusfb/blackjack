@@ -5,8 +5,8 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const betRouter = require('./api/controllers/blackjack.route');
-const {migrationData} = require('./services/migration.service');
+const betRouter = require('./api/controllers/blackjack-route');
+const {migrationData} = require('./services/migration-service');
 
 
 app.use(cors());

@@ -1,4 +1,4 @@
-const blackJackService = require('../../services/blackjack.service');
+const blackJackService = require('../../services/blackjack-service');
 
 exports.newGame = async (req, res, next) => {
   try {

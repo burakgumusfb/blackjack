@@ -1,8 +1,8 @@
 const { Card } = require('../models/card');
-const playerService = require('./player.service');
-const gameService = require('./game.service');
-const handService = require('./hand.service');
-const cardService = require('./card.service');
+const playerService = require('./player-service');
+const gameService = require('./game-service');
+const handService = require('./hand-service');
+const cardService = require('./card-service');
 const { actions, scores, status } = require('../constants/constants');
 
 /**
@@ -63,13 +63,16 @@ exports.newGame = async (playerName, delay) => {
  * @throws {Error} - If the active game is not found or a card is not found in the deck, an error is thrown.
  */
 exports.drawCard = async (playerName, action) => {
+    const player = await playerService.getPlayer(playerName);
+    if (!player) {
+        throw new Error("Please call first new-game endpoint.");
+    }
+    const playerDelay = player.delay / 1000;
     const game = await gameService.getActiveGame(playerName);
     if (!game) {
-        throw new Error("The game was not found. Please create a new game.");
+        this.newGame(playerName, playerDelay)
+        throw new Error("Your game will be ready in your delay second/s.");
     }
-
-    const player = await playerService.getPlayer(playerName);
-    const playerDelay = player.delay / 1000;
 
     let playerScore = await handService.calculateHandValue(game._id, player._id);
     if (action === actions.HIT && playerScore < scores.BLACKJACK_SCORE) {
@@ -118,7 +121,7 @@ exports.drawCard = async (playerName, action) => {
         info: `New game will be ready in ${playerDelay} sec`
     };
 
-    await this.newGame(playerName, playerDelay);
+    this.newGame(playerName, playerDelay);
 
     return response;
 };
@@ -141,6 +144,14 @@ exports.getHand = async (playerName) => {
 
     const playerCards = await handService.getHand(player._id, game._id);
     const dealerCards = await handService.getHand(dealer._id, game._id);
+
+    if (!playerCards){
+        throw new Error("Player hand is empty.");
+    }
+
+    if (!dealerCards){
+        throw new Error("Dealer hand is empty.");
+    }
 
     const response = {
         gameId: game._id,
