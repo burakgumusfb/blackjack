@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --forceExit",
+    "coverage": "jest --coverage",
     "start": "node src/app.js"
+  },
+  "jest": {
+    "testTimeout": 300000
   },
   "keywords": [],
   "author": "",

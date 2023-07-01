@@ -23,7 +23,7 @@ process.on('uncaughtException', (error) => {
     console.log(error)
 });
 
-const mongodbUri = process.env.ENV == 'docker' ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
+const mongodbUri = process.env.ENV === 'docker' ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
 
 mongoose.connect(mongodbUri, {});
 

@@ -1,4 +1,5 @@
 const Game = require('../models/game');
+const {Card} = require('../models/card');
 
 /**
  * Draws a card from the deck of the specified game that has not been used.
@@ -12,4 +13,9 @@ exports.drawCardFromDeck = async (gameId) => {
   ).lean();
 
   return card;
+};
+
+exports.getCardsCount = async () => {
+  const cardCount = await Card.count({}).lean();
+  return cardCount;
 };
