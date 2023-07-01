@@ -2,6 +2,13 @@ const { Card } = require('../models/card');
 const Hand = require('../models/hand');
 const { scores } = require('../constants/constants');
 
+/**
+ * Creates a new hand for the specified game and player with the given cards.
+ * @param {string} gameId - The ID of the game.
+ * @param {string} playerId - The ID of the player.
+ * @param {Array} cards - The array of cards for the hand.
+ * @returns {Promise<void>}
+ */
 exports.createHand = async (gameId, playerId, cards) => {
     const hands = cards.map((card) => {
         return new Hand({
@@ -15,6 +22,14 @@ exports.createHand = async (gameId, playerId, cards) => {
     await Hand.insertMany(hands);
 };
 
+/**
+ * Calculates the total value of the specified player's hand in the game.
+ * @param {string} gameId - The ID of the game.
+ * @param {string} playerId - The ID of the player.
+ * @param {boolean} isDealer - Indicates if the player is the dealer. Default is false.
+ * @returns {Promise<number>} - The calculated hand value.
+ * @throws {Error} - If the used cards or cards are not found.
+ */
 exports.calculateHandValue = async (gameId, playerId, isDealer = false) => {
     const usedCards = await Hand.find({ game: gameId, player: playerId }).select('card -_id').lean();
     if (!usedCards) {
@@ -55,3 +70,14 @@ exports.calculateHandValue = async (gameId, playerId, isDealer = false) => {
 
     return adjustedValue;
 };
+
+/**
+ * Retrieves the cards of the specified player's hand in the game.
+ * @param {string} playerId - The ID of the player.
+ * @param {string} gameId - The ID of the game.
+ * @returns {Promise<Array>} - The array of cards in the player's hand.
+ */
+exports.getHand = async (playerId, gameId) => {
+    const cards = await Hand.find({ player: playerId, game: gameId }).populate('card').select('card -_id').lean();
+    return cards;
+}

@@ -1,6 +1,10 @@
 const fs = require('fs');
 const { Card } = require('../models/card');
 
+/**
+ * Migrates card data from a JSON file to the database.
+ * @returns {Promise<void>}
+ */
 exports.migrationData = async () => {
   const data = fs.readFileSync('./src/data/db.json', 'utf8');
   const cards = JSON.parse(data);

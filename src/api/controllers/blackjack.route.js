@@ -13,4 +13,8 @@ router
     .route('/draw-card')
     .post(validate(blackJackParams.paramsDrawCard),blackJackController.drawCard);
 
+router
+    .route('/get-hand')
+    .get(blackJackController.getHand);
+
 module.exports = router;

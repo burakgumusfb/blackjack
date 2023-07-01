@@ -17,3 +17,12 @@ exports.drawCard = async (req, res, next) => {
     res.json(err.message);
   }
 };
+
+exports.getHand = async (req, res, next) => {
+  try {
+    const result = await blackJackService.getHand(req.query.playerName);
+    res.json(result);
+  } catch (err) {
+    res.json(err.message);
+  }
+};
