@@ -13,6 +13,15 @@ Creates a new game of Blackjack.
 - **Request Body:** JSON object containing the player's name and optional delay value.
 - **Response:** JSON object containing the game ID, dealer's cards, and player's cards.
 
+```
+curl --location 'localhost:3000/blackjack/new-game' \
+--header 'Content-Type: application/json' \
+--data '{
+    "playerName":"digitalturbine",
+    "delay":5
+}'
+```
+
 ### Draw a Card
 
 Draws a card from the deck in an active game.
@@ -21,6 +30,14 @@ Draws a card from the deck in an active game.
 - **Method:** POST
 - **Request Body:** JSON object containing the player's name and action (HIT or STAND).
 - **Response:** JSON object containing the game ID, game status, and information about the next game.
+
+```curl --location 'localhost:3000/blackjack/draw-card' \
+--header 'Content-Type: application/json' \
+--data '{
+    "playerName":"digitalturbine",
+    "action":"HIT"
+}'
+```
 
 ### Get Hand
 
@@ -31,6 +48,9 @@ Retrieves the player's and dealer's current hand in the active game.
 - **Query Parameters:** player name
 - **Response:** JSON object containing the game ID, dealer's cards, and player's cards.
 
+```
+curl --location 'localhost:3000/blackjack/get-hand?playerName=digitalturbine'
+```
 ## Validation
 
 The API uses validation middleware to validate the request parameters and body. The validation schemas for each endpoint can be found in the `blackJackParams` module.
