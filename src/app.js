@@ -23,7 +23,7 @@ process.on('uncaughtException', (error) => {
     console.log(error)
 });
 
-const mongodbUri = process.env.ENV === 'docker' ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
+const mongodbUri = process.env.PROJECT_ENV === 'docker' ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
 
 mongoose.connect(mongodbUri, {});
 
@@ -31,19 +31,19 @@ mongoose.set('returnOriginal', false);
 
 mongoose.connection.on('error', (err) => {
     console.log(err);
-    console.log('db connection problem.')
+    console.log('Mongodb connection problem.')
     process.exit();
 });
 
 mongoose.connection.on('open', () => {
-    console.log('mongodb connection has been opened.')
+    console.log('Mongodb connection has been opened.')
     migrationData();
 });
 
 mongoose.Promise = global.Promise;
 
 app.get('/health', async (req, res) => {
-    res.send(process.env.NODE_ENV);
+    res.send(process.env.PROJECT_ENV);
 });
 
 const appServer = http.createServer(app);
