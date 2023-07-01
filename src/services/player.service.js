@@ -2,7 +2,7 @@ const Player = require('../models/player');
 
 exports.createPlayer = async (playerName) => {
 
-    const player = await Player.findOne({ "name": playerName }).lean().exec();
+    let player = await Player.findOne({ "name": playerName }).lean().exec();
     if (!player) {
         player = new Player({
             name: playerName
@@ -14,7 +14,7 @@ exports.createPlayer = async (playerName) => {
 
 exports.createDealer = async () => {
 
-    const dealer = await Player.findOne({ "name": "dealer" }).lean().exec();
+    let dealer = await Player.findOne({ "name": "dealer" }).lean().exec();
     if (!dealer) {
         dealer = new Player({
             name: "dealer"

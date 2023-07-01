@@ -19,15 +19,15 @@ exports.createHand = async (gameId, playerId, cards) => {
 };
 
 exports.calculateHandValue = async (gameId, playerId, isDealer = false) => {
-    let usedCards = await Hand.find({ "game": gameId, "player": playerId }).select('card -_id').lean();
+    const usedCards = await Hand.find({ "game": gameId, "player": playerId }).select('card -_id').lean();
     if (!usedCards)
         throw new Error("Used cards couldn't find.");
 
-    let cards = await Card.find({ "_id": { $in: usedCards.map(l => l.card) } }).lean();
+    const cards = await Card.find({ "_id": { $in: usedCards.map(l => l.card) } }).lean();
     if (!cards)
         throw new Error("Cards couldn't find.");
 
-    let totalValue = cards.reduce((sum, obj) => {
+    const totalValue = cards.reduce((sum, obj) => {
         return sum + obj.value.reduce((valSum, val) => valSum + val, 0);
     }, 0);
 
@@ -48,9 +48,7 @@ exports.calculateHandValue = async (gameId, playerId, isDealer = false) => {
         aceCount--;
     }
 
-    if(isDealer && aceCount == 1 && adjustedValue < scores.THRESHOLD)
-    {
-      
+    if(isDealer && aceCount == 1 && adjustedValue < scores.THRESHOLD){
         var decision = Math.round(Math.random());
         if(decision == 0)
          adjustedValue -= 10;
