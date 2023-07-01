@@ -6,6 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const betRouter = require('./api/controllers/blackjack.route');
+const {migrationData} = require('./services/migration.service');
 
 
 app.use(cors());
@@ -36,6 +37,7 @@ mongoose.connection.on('error', (err) => {
 
 mongoose.connection.on('open', () => {
     console.log('mongodb connection has been opened.')
+    migrationData();
 });
 
 mongoose.Promise = global.Promise;
