@@ -45,7 +45,7 @@ exports.createDealer = async () => {
 exports.getPlayer = async (playerName) => {
     const player = await Player.findOne({ name: playerName }).lean();
     if (!player) {
-        throw new Error("The player was not found. Please create a player.");
+        throw new Error("The player was not found. Please create a player with new-game endpoint.");
     }
     return player;
 };
@@ -58,7 +58,7 @@ exports.getPlayer = async (playerName) => {
 exports.getDealer = async () => {
     const dealer = await Player.findOne({ name: "dealer" }).lean();
     if (!dealer) {
-        throw new Error("The dealer was not found. Please create a dealer.");
+        throw new Error("The dealer was not found. Please create a dealer with new-game endpoint.");
     }
     return dealer;
 };
