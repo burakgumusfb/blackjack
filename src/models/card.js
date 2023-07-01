@@ -15,9 +15,6 @@ const schema = new mongoose.Schema(
 
 const Card = mongoose.model('cards', schema, 'cards');
 
-
-
-
 module.exports = {
     Card:Card,
     Cardschema:schema    
