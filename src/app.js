@@ -12,7 +12,7 @@ const {migrationData} = require('./services/migration.service');
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/black-jack',betRouter);
+app.use('/blackjack',betRouter);
 
 
 process.on('unhandledRejection', (error) => {

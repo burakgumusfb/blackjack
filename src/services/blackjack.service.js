@@ -15,11 +15,18 @@ function shuffleCards(cards) {
 /**
  Creates a new game between player and the dealer.
  **/
-exports.newGame = async (playerName) => {
-    await DeleteBeforeGames(playerName);
+exports.newGame = async (playerName, delay) => {
+
+    //await DeleteBeforeGames(playerName);
+
+    const activeGame = await getActiveGame(playerName);
+    if (activeGame)
+        throw new Error("You have already a game. Please continue with draw-card endpoint.");
 
     const dealer = await createDealer();
-    const player = await createPlayer(playerName);
+    const player = await createPlayer(playerName, delay);
+
+    await new Promise(resolve => setTimeout(resolve, player.delay));
 
     const cards = await Card.find().lean().exec();
     const shuffledCards = shuffleCards(cards);
@@ -53,6 +60,8 @@ exports.drawCard = async (playerName, action) => {
     }
 
     const player = await getPlayer(playerName);
+    const playerDelay = player.delay / 1000;
+
     let playerScore = await calculateHandValue(game._id, player._id);
     if (action === actions.HIT && playerScore < scores.BLACKJACK_SCORE) {
         const deckCard = await drawCardFromDeck(game._id);
@@ -96,8 +105,11 @@ exports.drawCard = async (playerName, action) => {
 
     const response = {
         gameId: game._id,
-        status: game.status
+        status: game.status,
+        info: 'New game will be ready in ' + playerDelay + ' sec'
     };
 
+    this.newGame(playerName, playerDelay);
+    
     return response;
 };
