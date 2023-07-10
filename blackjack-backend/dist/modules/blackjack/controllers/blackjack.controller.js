@@ -29,12 +29,20 @@ let BlackjackController = exports.BlackjackController = class BlackjackControlle
             return this.blackjackService.newGame(newGameDto);
         }
         catch (error) {
-            return error.message;
+            return error;
         }
     }
     drawCard(drawCardDto) {
         try {
             return this.blackjackService.drawCard(drawCardDto);
+        }
+        catch (error) {
+            return error;
+        }
+    }
+    getHand(query) {
+        try {
+            return this.blackjackService.getHand(query.playerName);
         }
         catch (error) {
             return error;
@@ -57,6 +65,14 @@ __decorate([
     __metadata("design:paramtypes", [draw_card_dto_1.DrawCardDto]),
     __metadata("design:returntype", void 0)
 ], BlackjackController.prototype, "drawCard", null);
+__decorate([
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, common_1.Get)('get-hand'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], BlackjackController.prototype, "getHand", null);
 exports.BlackjackController = BlackjackController = __decorate([
     (0, common_1.Controller)('blackjack'),
     __metadata("design:paramtypes", [blackjack_service_1.BlackjackService,

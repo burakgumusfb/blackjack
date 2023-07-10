@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common';
 import { BlackjackService } from '../services/blackjack.service';
 import { NewGameDto } from '../dto/new-game.dto';
 import { DrawCardDto } from '../dto/draw-card.dto';
@@ -18,7 +18,7 @@ export class BlackjackController {
       this.migrationService.migrationData();
       return this.blackjackService.newGame(newGameDto);
     } catch (error) {
-      return error.message;
+      return error;
     }
   }
 
@@ -27,6 +27,15 @@ export class BlackjackController {
   drawCard(@Body() drawCardDto: DrawCardDto) {
     try {
       return this.blackjackService.drawCard(drawCardDto);
+    } catch (error) {
+      return error;
+    }
+  }
+  @HttpCode(HttpStatus.OK)
+  @Get('get-hand')
+  getHand(@Query() query) {
+    try {
+      return this.blackjackService.getHand(query.playerName);
     } catch (error) {
       return error;
     }

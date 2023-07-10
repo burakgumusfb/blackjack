@@ -8,4 +8,5 @@ export declare class BlackjackController {
     constructor(blackjackService: BlackjackService, migrationService: MigrationService);
     newGame(newGameDto: NewGameDto): any;
     drawCard(drawCardDto: DrawCardDto): any;
+    getHand(query: any): any;
 }

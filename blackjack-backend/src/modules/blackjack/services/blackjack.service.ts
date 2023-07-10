@@ -81,11 +81,7 @@ export class BlackjackService {
         if (!game && !player.hasGame) {
 
             await this.playerService.setGameStatus(drawCard.playerName, true);
-            const newGameDto = new NewGameDto();
-            newGameDto.playerName = drawCard.playerName;
-            newGameDto.delay = playerDelay;
-
-            this.newGame(newGameDto);
+            this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
 
             response.info = 'Your game will be ready in your delay second/s.'
             return response;
@@ -97,6 +93,10 @@ export class BlackjackService {
                 game._id,
                 player._id,
             );
+
+            if(drawCard.action !== Actions.HIT && drawCard.action !== Actions.STAND )
+            throw new InternalServerErrorException('Wrong action.');
+
             if (drawCard.action === Actions.HIT && playerScore < Scores.BLACKJACK_SCORE) {
                 const deckCard = await this.cardService.drawCardFromDeck(game._id);
                 if (!deckCard) {
@@ -152,12 +152,8 @@ export class BlackjackService {
             response.gameId = game._id;
             response.status = game.status;
             response.info = `New game will be ready in ${playerDelay} sec`;
-
-            const newGameDto = new NewGameDto();
-            newGameDto.playerName = drawCard.playerName;
-            newGameDto.delay = playerDelay;
     
-            this.newGame(newGameDto);
+            this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
     
             await this.playerService.setGameStatus(drawCard.playerName, true);
         }

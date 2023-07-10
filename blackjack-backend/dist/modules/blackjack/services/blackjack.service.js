@@ -22,7 +22,6 @@ const game_service_1 = require("../../game/game.service");
 const hand_service_1 = require("../../hand/hand.service");
 const player_service_1 = require("../../player/player.service");
 const card_schema_1 = require("../../../schemas/card.schema");
-const new_game_dto_1 = require("../dto/new-game.dto");
 let BlackjackService = exports.BlackjackService = class BlackjackService {
     constructor(cardModel, gameService, playerService, handService, cardService) {
         this.cardModel = cardModel;
@@ -75,15 +74,14 @@ let BlackjackService = exports.BlackjackService = class BlackjackService {
         const game = await this.gameService.getActiveGame(drawCard.playerName);
         if (!game && !player.hasGame) {
             await this.playerService.setGameStatus(drawCard.playerName, true);
-            const newGameDto = new new_game_dto_1.NewGameDto();
-            newGameDto.playerName = drawCard.playerName;
-            newGameDto.delay = playerDelay;
-            this.newGame(newGameDto);
+            this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
             response.info = 'Your game will be ready in your delay second/s.';
             return response;
         }
         if (player.hasGame == true && game) {
             let playerScore = await this.handService.calculateHandValue(game._id, player._id);
+            if (drawCard.action !== enums_1.Actions.HIT && drawCard.action !== enums_1.Actions.STAND)
+                throw new common_1.InternalServerErrorException('Wrong action.');
             if (drawCard.action === enums_1.Actions.HIT && playerScore < enums_1.Scores.BLACKJACK_SCORE) {
                 const deckCard = await this.cardService.drawCardFromDeck(game._id);
                 if (!deckCard) {
@@ -123,10 +121,7 @@ let BlackjackService = exports.BlackjackService = class BlackjackService {
             response.gameId = game._id;
             response.status = game.status;
             response.info = `New game will be ready in ${playerDelay} sec`;
-            const newGameDto = new new_game_dto_1.NewGameDto();
-            newGameDto.playerName = drawCard.playerName;
-            newGameDto.delay = playerDelay;
-            this.newGame(newGameDto);
+            this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
             await this.playerService.setGameStatus(drawCard.playerName, true);
         }
         return response;
