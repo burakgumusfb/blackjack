@@ -1,18 +1,17 @@
 version: '3.9'
 services:
-  blackjack-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:3000
-    depends_on:
-      - mongodb
+  # backend-1:
+  #   build:
+  #     context: ./blakjack-backend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
+  #   container_name: blakjack-backend
   mongodb:
     image: mongo
-    container_name: blackjack-mongodb
+    container_name: blakjack-mongodb
     ports:
       - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: 123
+      MONGO_INITDB_ROOT_PASSWORD: 12345678
