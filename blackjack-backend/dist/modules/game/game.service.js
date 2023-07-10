@@ -30,7 +30,7 @@ let GameService = exports.GameService = class GameService {
         const newGame = new this.gameModel({
             start_time: new Date(),
             player: playerId,
-            status: enums_1.Status.PLAYING,
+            status: enums_1.StatusEnum.PLAYING,
             cards,
         });
         const savedGame = await newGame.save();
@@ -63,7 +63,7 @@ let GameService = exports.GameService = class GameService {
         const player = await this.playerModel.findOne({ name: playerName }).lean();
         if (player) {
             const game = await this.gameModel
-                .findOne({ player: player._id, status: enums_1.Status.PLAYING })
+                .findOne({ player: player._id, status: enums_1.StatusEnum.PLAYING })
                 .lean();
             return game;
         }

@@ -1,22 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Status = exports.Scores = exports.Actions = void 0;
-var Actions;
-(function (Actions) {
-    Actions["HIT"] = "HIT";
-    Actions["STAND"] = "STAND";
-})(Actions || (exports.Actions = Actions = {}));
-var Scores;
-(function (Scores) {
-    Scores[Scores["BLACKJACK_SCORE"] = 21] = "BLACKJACK_SCORE";
-    Scores[Scores["THRESHOLD"] = 17] = "THRESHOLD";
-})(Scores || (exports.Scores = Scores = {}));
-var Status;
-(function (Status) {
-    Status["WIN"] = "WIN";
-    Status["BUST"] = "BUST";
-    Status["PLAYING"] = "PLAYING";
-    Status["DRAW"] = "DRAW";
-    Status["CREATING"] = "CREATING";
-})(Status || (exports.Status = Status = {}));
+exports.MessageType = exports.StatusEnum = exports.ScoresEnum = exports.ActionsEnum = void 0;
+var ActionsEnum;
+(function (ActionsEnum) {
+    ActionsEnum["HIT"] = "HIT";
+    ActionsEnum["STAND"] = "STAND";
+})(ActionsEnum || (exports.ActionsEnum = ActionsEnum = {}));
+var ScoresEnum;
+(function (ScoresEnum) {
+    ScoresEnum[ScoresEnum["BLACKJACK_SCORE"] = 21] = "BLACKJACK_SCORE";
+    ScoresEnum[ScoresEnum["THRESHOLD"] = 17] = "THRESHOLD";
+})(ScoresEnum || (exports.ScoresEnum = ScoresEnum = {}));
+var StatusEnum;
+(function (StatusEnum) {
+    StatusEnum["WIN"] = "WIN";
+    StatusEnum["BUST"] = "BUST";
+    StatusEnum["PLAYING"] = "PLAYING";
+    StatusEnum["DRAW"] = "DRAW";
+    StatusEnum["CREATING"] = "CREATING";
+})(StatusEnum || (exports.StatusEnum = StatusEnum = {}));
+var MessageType;
+(function (MessageType) {
+    MessageType["SUCCESS"] = "SUCCESS";
+    MessageType["WARNING"] = "WARNING";
+    MessageType["ERROR"] = "EERROR";
+})(MessageType || (exports.MessageType = MessageType = {}));
 //# sourceMappingURL=enums.js.map

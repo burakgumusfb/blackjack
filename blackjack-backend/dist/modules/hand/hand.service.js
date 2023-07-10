@@ -18,13 +18,9 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const enums_1 = require("../../common/enums/enums");
 const card_schema_1 = require("../../schemas/card.schema");
-const game_schema_1 = require("../../schemas/game.schema");
 const hand_schema_1 = require("../../schemas/hand.schema");
-const player_schema_1 = require("../../schemas/player.schema");
 let HandService = exports.HandService = class HandService {
-    constructor(gameModel, playerModel, handModel, cardModel) {
-        this.gameModel = gameModel;
-        this.playerModel = playerModel;
+    constructor(handModel, cardModel) {
         this.handModel = handModel;
         this.cardModel = cardModel;
     }
@@ -57,15 +53,15 @@ let HandService = exports.HandService = class HandService {
         }, 0);
         let aceCount = cards.filter((x) => x.isAce === true).length;
         let adjustedValue = totalValue;
-        while (aceCount > 1 && adjustedValue > enums_1.Scores.BLACKJACK_SCORE) {
+        while (aceCount > 1 && adjustedValue > enums_1.ScoresEnum.BLACKJACK_SCORE) {
             adjustedValue -= 12;
             aceCount--;
         }
-        if (aceCount >= 1 && adjustedValue > enums_1.Scores.BLACKJACK_SCORE) {
+        if (aceCount >= 1 && adjustedValue > enums_1.ScoresEnum.BLACKJACK_SCORE) {
             adjustedValue -= 1;
             aceCount--;
         }
-        if (isDealer && aceCount === 1 && adjustedValue < enums_1.Scores.THRESHOLD) {
+        if (isDealer && aceCount === 1 && adjustedValue < enums_1.ScoresEnum.THRESHOLD) {
             const decision = Math.round(Math.random());
             if (decision === 0) {
                 adjustedValue -= 10;
@@ -83,13 +79,9 @@ let HandService = exports.HandService = class HandService {
 };
 exports.HandService = HandService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(game_schema_1.Game.name)),
-    __param(1, (0, mongoose_1.InjectModel)(player_schema_1.Player.name)),
-    __param(2, (0, mongoose_1.InjectModel)(hand_schema_1.Hand.name)),
-    __param(3, (0, mongoose_1.InjectModel)(card_schema_1.Card.name)),
+    __param(0, (0, mongoose_1.InjectModel)(hand_schema_1.Hand.name)),
+    __param(1, (0, mongoose_1.InjectModel)(card_schema_1.Card.name)),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        mongoose_2.Model,
-        mongoose_2.Model,
         mongoose_2.Model])
 ], HandService);
 //# sourceMappingURL=hand.service.js.map

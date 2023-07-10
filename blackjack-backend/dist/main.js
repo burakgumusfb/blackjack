@@ -4,6 +4,7 @@ const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const swagger_1 = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const migration_service_1 = require("./modules/migration/migration.service");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const config = new swagger_1.DocumentBuilder()
@@ -14,6 +15,8 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
     app.useGlobalPipes(new common_1.ValidationPipe());
+    const migration = app.get(migration_service_1.MigrationService);
+    migration.migrationData();
     await app.listen(3000);
 }
 bootstrap();

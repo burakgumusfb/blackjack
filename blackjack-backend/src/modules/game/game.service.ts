@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Status } from 'src/common/enums/enums';
+import { StatusEnum } from 'src/common/enums/enums';
 import { Game } from 'src/schemas/game.schema';
 import { Hand } from 'src/schemas/hand.schema';
 import { Player } from 'src/schemas/player.schema';
@@ -18,7 +18,7 @@ export class GameService {
     const newGame = new this.gameModel({
       start_time: new Date(),
       player: playerId,
-      status: Status.PLAYING,
+      status: StatusEnum.PLAYING,
       cards,
     });
     const savedGame = await newGame.save();
@@ -58,7 +58,7 @@ export class GameService {
     const player = await this.playerModel.findOne({ name: playerName }).lean();
     if (player) {
       const game = await this.gameModel
-        .findOne({ player: player._id, status: Status.PLAYING })
+        .findOne({ player: player._id, status: StatusEnum.PLAYING })
         .lean();
       return game;
     }

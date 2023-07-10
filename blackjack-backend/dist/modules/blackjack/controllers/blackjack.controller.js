@@ -15,17 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlackjackController = void 0;
 const common_1 = require("@nestjs/common");
 const blackjack_service_1 = require("../services/blackjack.service");
-const new_game_dto_1 = require("../dto/new-game.dto");
-const draw_card_dto_1 = require("../dto/draw-card.dto");
-const migration_service_1 = require("../../migration/migration.service");
+const new_game_dto_1 = require("../dtos/new-game.dto");
+const draw_card_dto_1 = require("../dtos/draw-card.dto");
 let BlackjackController = exports.BlackjackController = class BlackjackController {
-    constructor(blackjackService, migrationService) {
+    constructor(blackjackService) {
         this.blackjackService = blackjackService;
-        this.migrationService = migrationService;
     }
     newGame(newGameDto) {
         try {
-            this.migrationService.migrationData();
             return this.blackjackService.newGame(newGameDto);
         }
         catch (error) {
@@ -75,7 +72,6 @@ __decorate([
 ], BlackjackController.prototype, "getHand", null);
 exports.BlackjackController = BlackjackController = __decorate([
     (0, common_1.Controller)('blackjack'),
-    __metadata("design:paramtypes", [blackjack_service_1.BlackjackService,
-        migration_service_1.MigrationService])
+    __metadata("design:paramtypes", [blackjack_service_1.BlackjackService])
 ], BlackjackController);
 //# sourceMappingURL=blackjack.controller.js.map

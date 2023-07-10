@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Scores } from 'src/common/enums/enums';
+import { ScoresEnum } from 'src/common/enums/enums';
 import { Card } from 'src/schemas/card.schema';
 import { Game } from 'src/schemas/game.schema';
 import { Hand } from 'src/schemas/hand.schema';
@@ -11,8 +11,6 @@ import { Player } from 'src/schemas/player.schema';
 @Injectable()
 export class HandService {
     constructor(
-        @InjectModel(Game.name) private readonly gameModel: Model<Game>,
-        @InjectModel(Player.name) private readonly playerModel: Model<Player>,
         @InjectModel(Hand.name) private readonly handModel: Model<Hand>,
         @InjectModel(Card.name) private readonly cardModel: Model<Card>,
     ) { }
@@ -51,17 +49,17 @@ export class HandService {
         let aceCount = cards.filter((x) => x.isAce === true).length;
         let adjustedValue = totalValue;
 
-        while (aceCount > 1 && adjustedValue > Scores.BLACKJACK_SCORE) {
+        while (aceCount > 1 && adjustedValue > ScoresEnum.BLACKJACK_SCORE) {
             adjustedValue -= 12;
             aceCount--;
         }
 
-        if (aceCount >= 1 && adjustedValue > Scores.BLACKJACK_SCORE) {
+        if (aceCount >= 1 && adjustedValue > ScoresEnum.BLACKJACK_SCORE) {
             adjustedValue -= 1;
             aceCount--;
         }
 
-        if (isDealer && aceCount === 1 && adjustedValue < Scores.THRESHOLD) {
+        if (isDealer && aceCount === 1 && adjustedValue < ScoresEnum.THRESHOLD) {
             const decision = Math.round(Math.random());
             if (decision === 0) {
                 adjustedValue -= 10;

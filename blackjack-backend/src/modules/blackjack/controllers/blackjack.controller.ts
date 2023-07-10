@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common';
 import { BlackjackService } from '../services/blackjack.service';
-import { NewGameDto } from '../dto/new-game.dto';
-import { DrawCardDto } from '../dto/draw-card.dto';
-import { MigrationService } from 'src/modules/migration/migration.service';
+import { NewGameDto } from '../dtos/new-game.dto';
+import { DrawCardDto } from '../dtos/draw-card.dto';
 
 @Controller('blackjack')
 export class BlackjackController {

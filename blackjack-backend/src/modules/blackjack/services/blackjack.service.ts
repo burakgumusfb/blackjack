@@ -1,16 +1,17 @@
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Actions, Scores, Status } from 'src/common/enums/enums';
+import { ActionsEnum, MessageType, ScoresEnum, StatusEnum } from 'src/common/enums/enums';
 import { CardService } from 'src/modules/card/card.service';
 import { GameService } from 'src/modules/game/game.service';
 import { HandService } from 'src/modules/hand/hand.service';
 import { PlayerService } from 'src/modules/player/player.service';
 import { Card } from 'src/schemas/card.schema';
-import { NewGameDto } from '../dto/new-game.dto';
-import { DrawCardDto } from '../dto/draw-card.dto';
+import { NewGameDto } from '../dtos/new-game.dto';
+import { DrawCardDto } from '../dtos/draw-card.dto';
+import { GameDataDto, NewGameResultDto } from '../dtos/new-game-result.dto';
 
 @Injectable()
 export class BlackjackService {
@@ -26,13 +27,15 @@ export class BlackjackService {
         return cards.sort(() => Math.random() - 0.5);
     }
 
-    async newGame(newGameDto: NewGameDto): Promise<any> {
+    async newGame(newGameDto: NewGameDto): Promise<NewGameResultDto> {
+        let result = new NewGameResultDto();
+        result.data = new GameDataDto();
         try {
             const activeGame = await this.gameService.getActiveGame(newGameDto.playerName);
             if (activeGame) {
-                throw new InternalServerErrorException(
-                    'You already have a game. Please continue with the draw-card endpoint.',
-                );
+                result.message = 'You already have a game. Please choose different name...',
+                result.messageType = MessageType.WARNING;
+                return result;
             }
 
             const dealer = await this.playerService.createDealer();
@@ -58,17 +61,18 @@ export class BlackjackService {
             playerCards = await this.handService.getHand(player._id, savedGame._id);
             dealerCards = await this.handService.getHand(dealer._id, savedGame._id);
 
-            const response = {
-                gameId: savedGame._id,
-                dealerCards,
-                playerCards,
-            };
+            result.data.gameId = savedGame._id;
+            result.data.dealerCards = dealerCards;
+            result.data.playerCards = playerCards;
+            result.messageType = MessageType.SUCCESS;
 
-            return response;
+            console.log(result.data.dealerCards);
         }
         catch (err) {
-            return err.message;
+            result.message = MessageType.ERROR;
+            result.message = err;
         }
+        return result;
     }
     async drawCard(drawCard: DrawCardDto): Promise<any> {
         let response = { gameId: undefined, info: 'Your game will be ready...', status: undefined }
@@ -94,10 +98,10 @@ export class BlackjackService {
                 player._id,
             );
 
-            if(drawCard.action !== Actions.HIT && drawCard.action !== Actions.STAND )
-            throw new InternalServerErrorException('Wrong action.');
+            if (drawCard.action !== ActionsEnum.HIT && drawCard.action !== ActionsEnum.STAND)
+                throw new InternalServerErrorException('Wrong action.');
 
-            if (drawCard.action === Actions.HIT && playerScore < Scores.BLACKJACK_SCORE) {
+            if (drawCard.action === ActionsEnum.HIT && playerScore < ScoresEnum.BLACKJACK_SCORE) {
                 const deckCard = await this.cardService.drawCardFromDeck(game._id);
                 if (!deckCard) {
                     throw new InternalServerErrorException('Card was not found in the deck.');
@@ -111,19 +115,19 @@ export class BlackjackService {
                     player._id,
                 );
 
-                if (playerScore > Scores.BLACKJACK_SCORE) {
-                    game.status = Status.BUST;
+                if (playerScore > ScoresEnum.BLACKJACK_SCORE) {
+                    game.status = StatusEnum.BUST;
                 }
             }
 
-            if (game.status === Status.PLAYING) {
+            if (game.status === StatusEnum.PLAYING) {
                 const dealer = await this.playerService.getDealer();
                 let dealerScore = await this.handService.calculateHandValue(
                     game._id,
                     dealer._id,
                     true,
                 );
-                while (dealerScore < Scores.THRESHOLD) {
+                while (dealerScore < ScoresEnum.THRESHOLD) {
                     const deckCard = await this.cardService.drawCardFromDeck(game._id);
                     await this.handService.createHand(game._id, dealer._id, deckCard.cards);
                     await this.gameService.usedGameCards(game._id, deckCard.cards);
@@ -135,14 +139,14 @@ export class BlackjackService {
                     );
                 }
 
-                if (dealerScore > Scores.BLACKJACK_SCORE) {
-                    game.status = Status.WIN;
+                if (dealerScore > ScoresEnum.BLACKJACK_SCORE) {
+                    game.status = StatusEnum.WIN;
                 } else if (dealerScore > playerScore) {
-                    game.status = Status.BUST;
+                    game.status = StatusEnum.BUST;
                 } else if (dealerScore < playerScore) {
-                    game.status = Status.WIN;
+                    game.status = StatusEnum.WIN;
                 } else {
-                    game.status = Status.DRAW;
+                    game.status = StatusEnum.DRAW;
                 }
             }
 
@@ -152,9 +156,10 @@ export class BlackjackService {
             response.gameId = game._id;
             response.status = game.status;
             response.info = `New game will be ready in ${playerDelay} sec`;
-    
+            
+            
             this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
-    
+
             await this.playerService.setGameStatus(drawCard.playerName, true);
         }
 
