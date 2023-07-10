@@ -1,1 +1,0 @@
-{"version":3,"file":"hand.module.js","sourceRoot":"","sources":["../../../src/modules/hand/hand.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,+DAAyD;AACzD,iDAA6C;AAQtC,IAAM,UAAU,wBAAhB,MAAM,UAAU;CAAI,CAAA;qBAAd,UAAU;IALtB,IAAA,eAAM,EAAC;QACN,OAAO,EAAE,CAAC,4BAAY,CAAC;QACvB,SAAS,EAAE,CAAC,0BAAW,CAAC;QACxB,OAAO,EAAE,CAAC,0BAAW,CAAC;KACvB,CAAC;GACW,UAAU,CAAI"}
