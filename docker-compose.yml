@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./blackjack-backend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    container_name: blackjack-backend
+  console-app:
+    build:
+      context: ./blackjack-console-app
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3000
+    container_name: blackjack-console-app
+  mongodb:
+    image: mongo
+    container_name: blackjack-mongodb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 12345678

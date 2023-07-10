@@ -1,0 +1,423 @@
+[
+    {
+      "value": [1, 11],
+      "name": "Ace of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": true,
+      "isUsed": false
+    },
+    {
+      "value": 2,
+      "name": "2 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 3,
+      "name": "3 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 4,
+      "name": "4 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 5,
+      "name": "5 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 6,
+      "name": "6 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 7,
+      "name": "7 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 8,
+      "name": "8 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 9,
+      "name": "9 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "10 of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Jack of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Queen of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "King of Hearts",
+      "deck": 1,
+      "type": "Hearts",
+      "isAce": false,
+      "isUsed": false
+    },
+
+    {
+      "value": [1, 11],
+      "name": "Ace of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": true,
+      "isUsed": false
+    },
+    {
+      "value": 2,
+      "name": "2 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 3,
+      "name": "3 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 4,
+      "name": "4 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 5,
+      "name": "5 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 6,
+      "name": "6 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 7,
+      "name": "7 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 8,
+      "name": "8 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 9,
+      "name": "9 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "10 of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Jack of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Queen of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "King of Diamonds",
+      "deck": 1,
+      "type": "Diamonds",
+      "isAce": false,
+      "isUsed": false
+    },
+
+    {
+      "value": [1, 11],
+      "name": "Ace of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": true,
+      "isUsed": false
+    },
+    {
+      "value": 2,
+      "name": "2 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 3,
+      "name": "3 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 4,
+      "name": "4 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 5,
+      "name": "5 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 6,
+      "name": "6 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 7,
+      "name": "7 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 8,
+      "name": "8 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 9,
+      "name": "9 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "10 of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Jack of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Queen of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "King of Clubs",
+      "deck": 1,
+      "type": "Clubs",
+      "isAce": false,
+      "isUsed": false
+    },
+
+    {
+      "value": [1, 11],
+      "name": "Ace of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": true,
+      "isUsed": false
+    },
+    {
+      "value": 2,
+      "name": "2 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 3,
+      "name": "3 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 4,
+      "name": "4 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 5,
+      "name": "5 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 6,
+      "name": "6 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 7,
+      "name": "7 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 8,
+      "name": "8 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 9,
+      "name": "9 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "10 of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Jack of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "Queen of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    },
+    {
+      "value": 10,
+      "name": "King of Spades",
+      "deck": 1,
+      "type": "Spades",
+      "isAce": false,
+      "isUsed": false
+    }
+    
+  ]
+  
