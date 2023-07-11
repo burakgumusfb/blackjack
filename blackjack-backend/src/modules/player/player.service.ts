@@ -17,7 +17,7 @@ export class PlayerService {
             .lean()
             .exec();
         if (!player) {
-            const savedPlayer = new this.playerModel({ name: playerName, delay: delay });
+            const savedPlayer = new this.playerModel({ name: playerName, delay: delay, hasGame: true });
             return await savedPlayer.save();
         } else {
             player = await this.playerModel

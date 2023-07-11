@@ -12,6 +12,7 @@ import { Card } from 'src/schemas/card.schema';
 import { NewGameDto } from '../dtos/new-game.dto';
 import { DrawCardDto } from '../dtos/draw-card.dto';
 import { GameDataDto, NewGameResultDto } from '../dtos/new-game-result.dto';
+import { DrawCardDataDto, DrawCardResultDto } from '../dtos/draw-card-result.dto';
 
 @Injectable()
 export class BlackjackService {
@@ -34,7 +35,7 @@ export class BlackjackService {
             const activeGame = await this.gameService.getActiveGame(newGameDto.playerName);
             if (activeGame) {
                 result.message = 'You already have a game. Please choose different name...',
-                result.messageType = MessageType.WARNING;
+                    result.messageType = MessageType.WARNING;
                 return result;
             }
 
@@ -65,8 +66,6 @@ export class BlackjackService {
             result.data.dealerCards = dealerCards;
             result.data.playerCards = playerCards;
             result.messageType = MessageType.SUCCESS;
-
-            console.log(result.data.dealerCards);
         }
         catch (err) {
             result.message = MessageType.ERROR;
@@ -74,11 +73,16 @@ export class BlackjackService {
         }
         return result;
     }
-    async drawCard(drawCard: DrawCardDto): Promise<any> {
-        let response = { gameId: undefined, info: 'Your game will be ready...', status: undefined }
+    async drawCard(drawCard: DrawCardDto): Promise<DrawCardResultDto> {
+        let result = new DrawCardResultDto();
+        result.data = new DrawCardDataDto();
+
+        result.message = 'Your game will be ready...';
         const player = await this.playerService.getPlayer(drawCard.playerName);
         if (!player) {
-            throw new InternalServerErrorException('Please call first new-game endpoint.');
+            result.message = 'Please call first new-game endpoint.';
+            result.messageType = MessageType.WARNING;
+            return result;
         }
         const playerDelay = player.delay / 1000;
         const game = await this.gameService.getActiveGame(drawCard.playerName);
@@ -86,9 +90,10 @@ export class BlackjackService {
 
             await this.playerService.setGameStatus(drawCard.playerName, true);
             this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
-
-            response.info = 'Your game will be ready in your delay second/s.'
-            return response;
+            
+            result.message = 'Your game will be ready in your delay second/s.'
+            result.messageType = MessageType.SUCCESS;
+            return result;
         }
 
         if (player.hasGame == true && game) {
@@ -98,13 +103,18 @@ export class BlackjackService {
                 player._id,
             );
 
-            if (drawCard.action !== ActionsEnum.HIT && drawCard.action !== ActionsEnum.STAND)
-                throw new InternalServerErrorException('Wrong action.');
+            if (drawCard.action !== ActionsEnum.HIT && drawCard.action !== ActionsEnum.STAND) {
+                result.message = 'Wrong action.';
+                result.messageType = MessageType.WARNING;
+                return result;
+            }
 
             if (drawCard.action === ActionsEnum.HIT && playerScore < ScoresEnum.BLACKJACK_SCORE) {
                 const deckCard = await this.cardService.drawCardFromDeck(game._id);
                 if (!deckCard) {
-                    throw new InternalServerErrorException('Card was not found in the deck.');
+                    result.message = 'Card was not found in the deck.';
+                    result.messageType = MessageType.WARNING;
+                    return result;
                 }
 
                 await this.handService.createHand(game._id, player._id, deckCard.cards);
@@ -153,17 +163,17 @@ export class BlackjackService {
             await this.gameService.updateGameStatus(game._id, game.status);
             await this.playerService.setGameStatus(drawCard.playerName, false);
 
-            response.gameId = game._id;
-            response.status = game.status;
-            response.info = `New game will be ready in ${playerDelay} sec`;
-            
-            
+            result.data.gameId = game._id;
+            result.data.status = game.status;
+            result.message = `New game will be ready in ${playerDelay} sec`;
+
+
             this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
 
             await this.playerService.setGameStatus(drawCard.playerName, true);
         }
 
-        return response;
+        return result;
     }
     async getHand(playerName): Promise<any> {
         const player = await this.playerService.getPlayer(playerName);
