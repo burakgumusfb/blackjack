@@ -5,7 +5,7 @@ import { DrawCardResultDto } from '../dtos/draw-card-result.dto';
 export class ErrorParser {
     constructor() { }
 
-    async parser(response: any) {
+    async parse(response: any) {
         console.log(response.message);
     }
 }

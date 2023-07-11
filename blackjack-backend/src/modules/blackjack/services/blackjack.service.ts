@@ -76,7 +76,7 @@ export class BlackjackService {
         result.data = new DrawCardDataDto();
         result.message = 'Your game will be ready...';
         result.messageType = null;
-
+        const dealer = await this.playerService.getDealer();
         const player = await this.playerService.getPlayer(drawCard.playerName);
         if (!player) {
             result.message = 'Please call first new-game endpoint.';
@@ -103,7 +103,7 @@ export class BlackjackService {
             );
 
             if (drawCard.action !== ActionsEnum.HIT && drawCard.action !== ActionsEnum.STAND) {
-                result.message = 'Wrong action.';
+                result.message = 'Invalid action.';
                 result.messageType = MessageType.WARNING;
                 return result;
             }
@@ -122,6 +122,12 @@ export class BlackjackService {
                 playerScore = await this.handService.calculateHandValue(
                     game._id,
                     player._id,
+                );
+
+                dealerScore = await this.handService.calculateHandValue(
+                    game._id,
+                    dealer._id,
+                    true,
                 );
 
                 if (playerScore > ScoresEnum.BLACKJACK_SCORE) {

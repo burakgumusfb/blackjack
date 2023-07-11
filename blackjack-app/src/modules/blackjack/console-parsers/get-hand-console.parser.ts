@@ -6,7 +6,7 @@ import { GetHandResultDto } from '../dtos/get-hand-result.dto';
 export class GetHandConsoleParser {
   constructor() {}
 
-  async parser(getHandResultDto: GetHandResultDto) {
+  async parse(getHandResultDto: GetHandResultDto) {
     console.log('\n');
     console.log('New Game Id:' + getHandResultDto.data.gameId);
     console.log("-----Dealer's Hand-----");

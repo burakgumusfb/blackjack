@@ -5,7 +5,7 @@ import { NewGameResultDto } from '../dtos/new-game-result.dto';
 export class NewGameConsoleParser {
   constructor() { }
 
-  async parser(newGameResultDto: NewGameResultDto) {
+  async parse(newGameResultDto: NewGameResultDto) {
     console.log('\n');
     console.log('Game Id:' + newGameResultDto.data.gameId);
     console.log('-----Dealer Cards-----');

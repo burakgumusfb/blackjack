@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import * as readline from 'readline';
+import { AppModule } from './app.module';
+import { MessageType } from './common/enums/enums';
 import { BlackjackModule } from './modules/blackjack/blackjack.module';
 import { BlackjackService } from './modules/blackjack/services/blackjack.service';
 import { NewGameConsoleParser } from './modules/blackjack/console-parsers/new-game.console.parser';
 import { DrawCardConsoleParser } from './modules/blackjack/console-parsers/draw-card-console.parser';
-import { MessageType } from './common/enums/enums';
-import { AppModule } from './app.module';
 import { GetHandConsoleParser } from './modules/blackjack/console-parsers/get-hand-console.parser';
 import { ErrorParser } from './modules/blackjack/console-parsers/error.parser';
 
@@ -20,20 +20,20 @@ class Game {
     private readonly drawCardConsoleParser: DrawCardConsoleParser,
     private readonly getHandConsoleParser: GetHandConsoleParser,
     private readonly errorParser: ErrorParser,
-    private readonly rl: readline.Interface
+    private readonly readlineInterface: readline.Interface
   ) { }
 
   private async playGame(): Promise<void> {
     const playerName = await this.askQuestion('Please enter your name: ');
     const delay = Number(await this.askQuestion('Please enter delay: '));
-
+    console.log(`The game will start in ${delay} sec.`);
     const result = await this.blackjackService.newGame({ playerName, delay });
 
     if (result.messageType === MessageType.SUCCESS) {
-      this.newGameConsoleParser.parser(result);
+      this.newGameConsoleParser.parse(result);
       await this.drawCard(playerName, delay);
     } else {
-      await this.errorParser.parser(result);
+      await this.errorParser.parse(result);
       await this.playGame();
     }
   }
@@ -43,11 +43,11 @@ class Game {
     const response = await this.blackjackService.drawCard({ playerName, action });
 
     if (response.messageType === MessageType.SUCCESS) {
-      await this.drawCardConsoleParser.parser(response);
+      await this.drawCardConsoleParser.parse(response);
 
-      for (let i = 1; i <=delay; i++) {
+      for (let i = 1; i <= delay; i++) {
         console.log(`Your new game will start in ${i} sec.`);
-        await sleep(1000);
+        await sleep(1000 * 1.1);
       }
 
       await this.getHand(playerName);
@@ -59,12 +59,12 @@ class Game {
 
   private async getHand(playerName: string): Promise<void> {
     const response = await this.blackjackService.getHand(playerName);
-    await this.getHandConsoleParser.parser(response);
+    await this.getHandConsoleParser.parse(response);
   }
 
   private askQuestion(question: string): Promise<string> {
     return new Promise((resolve) => {
-      this.rl.question(question, (answer) => {
+      this.readlineInterface.question(question, (answer) => {
         resolve(answer);
       });
     });
@@ -72,7 +72,7 @@ class Game {
 
   public async start(): Promise<void> {
     await this.playGame();
-    this.rl.close();
+    this.readlineInterface.close();
   }
 }
 
@@ -83,7 +83,7 @@ async function bootstrap(): Promise<void> {
   const drawCardConsoleParser = app.get(DrawCardConsoleParser);
   const getHandConsoleParser = app.get(GetHandConsoleParser);
   const errorParser = app.get(ErrorParser);
-  const rl = readline.createInterface({
+  const readlineInterface = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
@@ -94,7 +94,7 @@ async function bootstrap(): Promise<void> {
     drawCardConsoleParser,
     getHandConsoleParser,
     errorParser,
-    rl
+    readlineInterface
   );
   await game.start();
 
