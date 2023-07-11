@@ -5,7 +5,7 @@ import { DrawCardResultDto } from '../dtos/draw-card-result.dto';
 export class DrawCardConsoleParser {
   constructor() {}
 
-  parser(drawCardResultDto: DrawCardResultDto) {
+  async parser(drawCardResultDto: DrawCardResultDto) {
     console.log('\n');
     console.log('New Game Id:' + drawCardResultDto.data.gameId);
     console.log('Game Status:' + drawCardResultDto.data.status);
