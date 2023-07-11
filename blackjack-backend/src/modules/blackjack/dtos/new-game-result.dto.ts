@@ -6,10 +6,14 @@ export class NewGameResultDto {
   data: GameDataDto;
 }
 
-export class CardDto {
+export class CardFields {
   _id: string;
   value: number[];
   name: string;
+}
+
+export class CardDto {
+  card: CardFields;
 }
 
 export class GameDataDto {

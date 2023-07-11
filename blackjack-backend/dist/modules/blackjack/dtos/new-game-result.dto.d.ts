@@ -4,10 +4,13 @@ export declare class NewGameResultDto {
     message: string;
     data: GameDataDto;
 }
-export declare class CardDto {
+export declare class CardFields {
     _id: string;
     value: number[];
     name: string;
+}
+export declare class CardDto {
+    card: CardFields;
 }
 export declare class GameDataDto {
     gameId: string;
