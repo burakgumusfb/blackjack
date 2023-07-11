@@ -12,6 +12,7 @@ node_modules/
 # Rider
 .idea/
 ./dist
+dist/
 
 # Visual Studio
 .vs/
