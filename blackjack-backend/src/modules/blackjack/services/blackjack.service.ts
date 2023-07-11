@@ -206,7 +206,7 @@ export class BlackjackService {
             return result;
         }
 
-        result.data.gameId = game.id;
+        result.data.gameId = game._id;
         result.data.dealerCards = dealerCards;
         result.data.playerCards = playerCards;
 
