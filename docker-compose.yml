@@ -9,11 +9,11 @@ services:
     container_name: blackjack-backend
   console-app:
     build:
-      context: ./blackjack-console-app
+      context: ./blackjack-app
       dockerfile: Dockerfile
     ports:
       - 3001:3000
-    container_name: blackjack-console-app
+    container_name: blackjack-app
   mongodb:
     image: mongo
     container_name: blackjack-mongodb
