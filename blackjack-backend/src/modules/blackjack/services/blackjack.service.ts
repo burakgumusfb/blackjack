@@ -1,14 +1,14 @@
 /* eslint-disable prefer-const */
 /* eslint-disable prettier/prettier */
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ActionsEnum, MessageType, ScoresEnum, StatusEnum } from 'src/common/enums/enums';
-import { CardService } from 'src/modules/card/card.service';
-import { GameService } from 'src/modules/game/game.service';
-import { HandService } from 'src/modules/hand/hand.service';
-import { PlayerService } from 'src/modules/player/player.service';
-import { Card } from 'src/schemas/card.schema';
+import { ActionsEnum, MessageType, ScoresEnum, StatusEnum } from '@common/enums/enums';
+import { CardService } from '@modules/card/card.service';
+import { GameService } from '@modules/game/game.service';
+import { HandService } from '@modules/hand/hand.service';
+import { PlayerService } from '@modules/player/player.service';
+import { Card } from '@schemas/card.schema';
 import { NewGameDto } from '../dtos/new-game.dto';
 import { DrawCardDto } from '../dtos/draw-card.dto';
 import { GameDataDto, NewGameResultDto } from '../dtos/new-game-result.dto';
@@ -32,12 +32,12 @@ export class BlackjackService {
     async newGame(newGameDto: NewGameDto): Promise<NewGameResultDto> {
         let result = new NewGameResultDto();
         result.data = new GameDataDto();
-        result.messageType = MessageType.SUCCESS;
+        result.messageType = null;
 
         const activeGame = await this.gameService.getActiveGame(newGameDto.playerName);
         if (activeGame) {
             result.message = 'You already have a game. Please choose different name...',
-                result.messageType = MessageType.WARNING;
+            result.messageType = MessageType.WARNING;
             return result;
         }
 
@@ -67,14 +67,15 @@ export class BlackjackService {
         result.data.gameId = savedGame._id;
         result.data.dealerCards = dealerCards;
         result.data.playerCards = playerCards;
+        result.messageType = MessageType.SUCCESS;
 
         return result;
     }
     async drawCard(drawCard: DrawCardDto): Promise<DrawCardResultDto> {
         let result = new DrawCardResultDto();
         result.data = new DrawCardDataDto();
-        result.messageType = MessageType.SUCCESS;
         result.message = 'Your game will be ready...';
+        result.messageType = null;
 
         const player = await this.playerService.getPlayer(drawCard.playerName);
         if (!player) {
@@ -166,7 +167,7 @@ export class BlackjackService {
             result.data.status = game.status;
             result.data.playerScore = playerScore;
             result.data.dealerScore = dealerScore;
-
+            result.messageType = MessageType.SUCCESS;
             result.message = `New game will be ready in ${playerDelay} sec`;
 
             this.newGame({ playerName: drawCard.playerName, delay: playerDelay });
@@ -179,7 +180,7 @@ export class BlackjackService {
     async getHand(playerName): Promise<GetHandResultDto> {
         let result = new GetHandResultDto();
         result.data = new HandDataDto();
-        result.message = MessageType.SUCCESS;
+        result.messageType = null;
 
         const player = await this.playerService.getPlayer(playerName);
         const dealer = await this.playerService.getDealer();
@@ -209,6 +210,7 @@ export class BlackjackService {
         result.data.gameId = game._id;
         result.data.dealerCards = dealerCards;
         result.data.playerCards = playerCards;
+        result.messageType = MessageType.SUCCESS;
 
         return result;
     }

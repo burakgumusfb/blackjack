@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SchemaModule } from 'src/schemas/schema.module';
+import { SchemaModule } from '@schemas/schema.module';
 import { BlackjackService } from './services/blackjack.service';
 import { CardService } from '../card/card.service';
 import { HandService } from '../hand/hand.service';

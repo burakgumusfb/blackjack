@@ -2,11 +2,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ScoresEnum } from 'src/common/enums/enums';
-import { Card } from 'src/schemas/card.schema';
-import { Game } from 'src/schemas/game.schema';
-import { Hand } from 'src/schemas/hand.schema';
-import { Player } from 'src/schemas/player.schema';
+import { ScoresEnum } from '@common/enums/enums';
+import { Card } from '@schemas/card.schema';
+import { Hand } from '@schemas/hand.schema';
 
 @Injectable()
 export class HandService {

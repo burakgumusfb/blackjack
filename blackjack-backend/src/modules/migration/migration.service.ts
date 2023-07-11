@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Card } from 'src/schemas/card.schema';
+import { Card } from '@schemas/card.schema';
 import * as fs from 'fs-extra';
 
 @Injectable()
@@ -10,13 +10,13 @@ export class MigrationService {
     @InjectModel(Card.name) private readonly cardModel: Model<Card>,
   ) {}
 
-  async migrationData() {
+  async migrationData(): Promise<number> {
     const data = fs.readFileSync('./src/data/db.json', 'utf8');
     const cards = JSON.parse(data);
 
     const cardCount = await this.cardModel.countDocuments({}).lean();
     if (cardCount === 312) {
-      return;
+      return cardCount;
     }
 
     await this.cardModel.deleteMany({});
@@ -38,5 +38,6 @@ export class MigrationService {
         }
       }
     }
+    return this.cardModel.count();
   }
 }

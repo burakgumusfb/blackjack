@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { StatusEnum } from 'src/common/enums/enums';
-import { Game } from 'src/schemas/game.schema';
-import { Hand } from 'src/schemas/hand.schema';
-import { Player } from 'src/schemas/player.schema';
+import { Model } from 'mongoose';
+import { StatusEnum } from '@common/enums/enums';
+import { Game } from '@schemas/game.schema';
+import { Hand } from '@schemas/hand.schema';
+import { Player } from '@schemas/player.schema';
 
 @Injectable()
 export class GameService {
