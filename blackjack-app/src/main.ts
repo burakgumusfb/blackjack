@@ -26,7 +26,7 @@ class Game {
   private async playGame(): Promise<void> {
     const playerName = await this.askQuestion('Please enter your name: ');
     const delay = Number(await this.askQuestion('Please enter delay: '));
-    console.log(`The game will start in ${delay} sec.`);
+    console.log(`The game will start in ${delay} second/s`);
     const result = await this.blackjackService.newGame({ playerName, delay });
 
     if (result.messageType === MessageType.SUCCESS) {
@@ -46,7 +46,7 @@ class Game {
       await this.drawCardConsoleParser.parse(response);
 
       for (let i = 1; i <= delay; i++) {
-        console.log(`Your new game will start in ${i} sec.`);
+        console.log(`Your new game will start in ${i} second/s.`);
         await sleep(1000 * 1.1);
       }
 
