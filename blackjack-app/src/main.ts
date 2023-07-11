@@ -6,12 +6,14 @@ import { BlackjackService } from './modules/blackjack/services/blackjack.service
 import { NewGameConsoleParser } from './modules/blackjack/console-parsers/new-game.console.parser';
 import { MessageType } from './common/enums/enums';
 import { AppModule } from './app.module';
-import { Action } from 'rxjs/internal/scheduler/Action';
+import { DrawCardConsoleParser } from './modules/blackjack/console-parsers/draw-card-console.parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const blackjackService = app.get(BlackjackService);
   const newGameConsoleParser = app.get(NewGameConsoleParser);
+  const drawCardConsoleParser = app.get(DrawCardConsoleParser);
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -26,23 +28,20 @@ async function bootstrap() {
           await drawCard(playerName);
         }
         else {
-          console.log(newGameResult.message);
           playerGame();
         }
       });
     });
   }
+
   async function drawCard(playerName) {
     rl.question('Please enter your action (HIT,STAND): ', async (action) => {
       console.log(action)
       const drawCardResult = await blackjackService.drawCard({ playerName: playerName, action: action });
-      console.log(drawCardResult);
       if (drawCardResult.messageType == MessageType.SUCCESS) {
-        console.log('şurada');
+        drawCardConsoleParser.parser(drawCardResult);
       }
       else {
-        console.log('burada');
-        console.log(drawCardResult.message);
         drawCard(playerName);
       }
     });

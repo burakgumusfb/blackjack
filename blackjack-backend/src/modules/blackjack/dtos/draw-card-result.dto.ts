@@ -9,4 +9,6 @@ export class DrawCardResultDto {
 export class DrawCardDataDto {
   gameId: string;
   status: string;
+  dealerScore: number;
+  playerScore: number;
 }
